@@ -4,9 +4,27 @@ Practical, research-oriented Python tutorials for students and researchers in ph
 
 This repository is maintained by **Dr Junaid Ali**, Associate Professor of Physics and Head of the Optoelectronics Research Laboratory at COMSATS University Islamabad. It is being developed as a teaching and reproducible-research resource rather than as a collection of disconnected code examples.
 
+## Start here
+
+The first executable notebook is:
+
+- [Tutorial 01 — Arrays, units, and an I–V plot](notebooks/01_core/01_arrays_units_iv_plot.ipynb)
+
+It uses a clearly labelled synthetic dataset to introduce arrays, unit conversion, linear fitting, residual inspection, plotting, and cautious physical interpretation.
+
+## Repository contents
+
+| Item | Purpose |
+|---|---|
+| [ROADMAP.md](ROADMAP.md) | Development sequence and release criteria |
+| [requirements.txt](requirements.txt) | Version-bounded Python dependencies |
+| [notebooks/](notebooks/) | Executable teaching notebooks |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Scientific, ethical, and technical contribution rules |
+| [CITATION.cff](CITATION.cff) | Machine-readable citation information |
+
 ## Scope
 
-The planned tutorials will show how Python can be used to:
+The tutorials will show how Python can be used to:
 
 - organise, clean, and inspect experimental data;
 - visualise measurements clearly and without distorting them;
@@ -36,11 +54,27 @@ The planned tutorials will show how Python can be used to:
 - Experimental scientists beginning computational analysis
 - Teachers developing blended or laboratory-based learning activities
 
-The tutorials will assume basic familiarity with scientific measurements but will not assume advanced programming experience.
+The tutorials assume basic familiarity with scientific measurements but do not assume advanced programming experience.
 
-## Repository status
+## Quick start
 
-This repository is under active development. The README defines the scope and publication plan; notebooks, example datasets, exercises, and environment files will be added incrementally. Only material that has been checked for scientific correctness, attribution, and reproducibility will be presented as a completed tutorial.
+A clean virtual environment is recommended.
+
+```bash
+git clone https://github.com/luckycharmer/Python_tutorials_2025.git
+cd Python_tutorials_2025
+python -m venv .venv
+```
+
+Activate the environment, then install the dependencies and open JupyterLab:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+jupyter lab
+```
+
+A fully pinned environment will be issued with the first versioned tutorial release.
 
 ## Reproducibility standard
 
@@ -53,9 +87,11 @@ Each released tutorial should include:
 5. checks for units, assumptions, and uncertainty; and
 6. a short exercise or extension task.
 
-## Using the tutorials
+Measured, simulated, and synthetic data must be identified explicitly.
 
-Once notebooks are released, they will be usable locally through Jupyter or in a browser-based notebook environment. Installation instructions and a pinned environment file will be added with the first tutorial release.
+## Repository status
+
+The repository foundation and first tutorial are now available. Further notebooks, documented datasets, exercises, and instructor resources will be added incrementally after scientific and reproducibility checks.
 
 ## Academic profile
 
@@ -64,4 +100,6 @@ Once notebooks are released, they will be usable locally through Jupyter or in a
 
 ## Contributions and reuse
 
-Suggestions, corrections, and reproducibility reports are welcome through GitHub Issues. A formal licence and contribution guide will be added before the first tutorial package is released.
+Suggestions, corrections, and reproducibility reports are welcome through GitHub Issues. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing substantial additions.
+
+A formal licence has not yet been selected. Until one is added, reuse beyond what copyright law permits requires the author's permission.
