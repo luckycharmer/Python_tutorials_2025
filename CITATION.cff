@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use these tutorials in teaching or research, please cite this repository."
+title: "Scientific Python Tutorials for Physics and Materials Research"
+type: software
+authors:
+  - family-names: "Ali"
+    given-names: "Junaid"
+    orcid: "https://orcid.org/0000-0002-5463-4442"
+    affiliation: "COMSATS University Islamabad"
+repository-code: "https://github.com/luckycharmer/Python_tutorials_2025"
+url: "https://github.com/luckycharmer/Python_tutorials_2025"
+keywords:
+  - scientific Python
+  - physics education
+  - materials science
+  - reproducible research
+  - Jupyter notebooks
