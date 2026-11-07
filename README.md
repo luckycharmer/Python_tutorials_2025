@@ -6,11 +6,12 @@ This repository is maintained by **Dr Junaid Ali**, Associate Professor of Physi
 
 ## Start here
 
-The first executable notebook is:
+Work through the executable notebooks in order:
 
-- [Tutorial 01 — Arrays, units, and an I–V plot](notebooks/01_core/01_arrays_units_iv_plot.ipynb)
+- [Tutorial 01 — Arrays, units, and an I–V plot](notebooks/01_core/01_arrays_units_iv_plot.ipynb): arrays, unit conversion, linear fitting, residual inspection, plotting, and cautious physical interpretation.
+- [Tutorial 02 — Vectorised sheet resistance from four-point-probe data](notebooks/01_core/02_vectorised_sheet_resistance.ipynb): two-dimensional arrays, broadcasting, fitting many datasets at once, slope uncertainty, and converting to sheet resistance, resistivity, and conductivity.
 
-It uses a clearly labelled synthetic dataset to introduce arrays, unit conversion, linear fitting, residual inspection, plotting, and cautious physical interpretation.
+Both use clearly labelled synthetic data. Every notebook is checked automatically on each pull request (see [.github/workflows/check-notebooks.yml](.github/workflows/check-notebooks.yml)).
 
 ## Repository contents
 
