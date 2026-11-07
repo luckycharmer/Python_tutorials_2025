@@ -1,7 +1,7 @@
 # Design: Quantum Computing with Python track
 
 Date: 2026-11-07
-Status: draft, awaiting approval
+Status: draft, awaiting final approval
 
 ## Intent
 
@@ -72,6 +72,8 @@ Folder: `notebooks/quantum/` with its own `README.md`.
 | Q09 (optional) | Running on real hardware | Bell or CHSH circuit on IBM Quantum through `qiskit-ibm-runtime`, comparison with the noiseless and noisy simulations | Measured CHSH value compared to the classical bound, with stated statistical uncertainty |
 
 Q09 must also run offline: it ships with a saved, clearly labelled set of measured results (with date, backend name and shot count recorded) so the analysis cells work without an account.
+
+**Who produces the hardware data (decided by Dr Junaid Ali):** primarily Dr Ali or his lab, on their own IBM Quantum account. The builder supplies a short script, `notebooks/quantum/run_q09_hardware.py`, that submits the circuit and writes the results to a data file in a fixed format, recording date, backend name, shot count, Qiskit version and job ID. As a fallback, Dr Ali may give the builder access to an account to do the run. In that case the API token is supplied through an environment variable and is never written into a notebook, script, output or commit.
 
 ## Dependencies
 
