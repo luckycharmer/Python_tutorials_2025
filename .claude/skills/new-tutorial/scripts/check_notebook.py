@@ -121,7 +121,11 @@ def check(path, execute):
             if proc.returncode == 0:
                 report("OK", "executed top to bottom in a fresh kernel")
             else:
-                tail = "\n      ".join(proc.stderr.strip().splitlines()[-8:])
+                clean = re.sub(r"\x1b\[[0-9;]*m", "", proc.stderr)
+                lines = [ln for ln in clean.splitlines() if ln.strip() and not set(ln.strip()) <= {"-"}]
+                # prefer the exception line(s) near the end, e.g. "ZeroDivisionError: division by zero"
+                errs = [ln for ln in lines if re.match(r"^\w*(Error|Exception)\b.*:", ln.strip())]
+                tail = "\n      ".join((errs[-2:] if errs else lines[-6:]))
                 report("FAIL", f"execution failed:\n      {tail}")
 
     return results
