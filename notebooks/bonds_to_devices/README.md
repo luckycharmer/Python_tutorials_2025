@@ -22,13 +22,21 @@ Because the video and the notebook import the same physics module, every number 
 
 Planned numbers are textbook values and will be checked again against primary sources when each episode is built.
 
+## How new episodes are made
+
+- `reel_kit.py` holds the shared house style: frame, equation strip, watermarks, end card and renderer. Episode scripts only add their physics and picture.
+- `episodes.csv` lists all 31 planned episodes and which are built.
+- The `new-episode` skill (`.claude/skills/new-episode/`) builds the next due episode from the Google Drive posting tracker: fact sheet, physics module, notebook, video, checks, commit and a ready-to-post Google Doc.
+- Finished videos are committed to `videos/`.
+
 ## Episode 1 files
 
 | File | What it is |
 |---|---|
 | `01_why_hydrogen_comes_in_pairs.ipynb` | Class notebook: energy curve, zero-point energy, bond energy, thermal comparison, validation checks |
 | `h2_morse.py` | Constants and Morse model, shared by the notebook and the video |
-| `make_reel_ep01.py` | Renders the video to `output/ep01_h2_bond.mp4` |
+| `make_reel_ep01.py` | Renders the video to `output/ep01_h2_bond.mp4` (a copy is kept in `videos/`) |
+| `facts/ep01.md` | Fact sheet: every on-screen number with two sources |
 | `assets/lab_logo.png` | Lab logo for the end card (add your own; see `assets/README.md`) |
 
 To make the video yourself, install `ffmpeg` (a separate program, not a Python package), then run from this folder:
