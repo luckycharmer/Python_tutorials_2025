@@ -14,21 +14,21 @@ Each episode is one physics idea delivered twice from the same code: a 25–30 s
 | What | Where |
 |---|---|
 | Posting schedule (owner edits it) | Google Drive folder "Bonds to Devices": sheet `18Zo4BNFqM7mbp3LDDA4Ek3BOf39cAE1T_hHQF77YiaM` (episodes 1–8) and sheet `1e05aud0x9DDzMaczViMrJr8Py93VyGS3CCbvm1E-BXs` (episodes 9–31). Drive folder id `1X2Er-mOiNw6e_Q1FxMKctF4FlscC62oM` |
-| Which episodes are already built | `notebooks/bonds_to_devices/episodes.csv`, column `status` (`planned` or `built`) |
+| Episode list, dates and build status | `notebooks/bonds_to_devices/episodes.csv`: `production_due`, `post_date`, `status` (`planned` or `built`). This file alone is enough to run the skill |
 | Shared style and renderer | `notebooks/bonds_to_devices/reel_kit.py`. Its top docstring has a cheat-sheet with every field, limit and helper you need; read that, not the whole file |
 | Worked example to copy | `make_reel_ep01.py`, `h2_morse.py`, `01_why_hydrogen_comes_in_pairs.ipynb` |
 | Notebook rules and checker | the `new-tutorial` skill and `.claude/skills/new-tutorial/scripts/check_notebook.py` |
 
 All episode files live in `notebooks/bonds_to_devices/` and every command below runs from that folder unless it says otherwise. This overrides the `new-tutorial` skill's folder rule.
 
-The Drive sheets cannot be edited cell by cell from here. Treat them as read-only schedule; record build progress in `episodes.csv`.
+The Drive sheets cannot be edited cell by cell from here. Treat them as a read-only view of the schedule; `episodes.csv` holds the dates and the build status. Google Drive may not be connected in a scheduled run: check once with ToolSearch for "Google Drive". If it is missing, skip every Drive step and say so in the report.
 
 ## 1. Pick the work
 
 1. If the owner names an episode, build that one and skip the rest of this step.
-2. Read both Drive sheets with the Google Drive `read_file_content` tool. Collect the "Reel (main episode)" rows.
-3. An episode is **due** when its `Production due` date is on or before today + 8 days and `episodes.csv` says `planned`.
-4. Build the due episodes in date order, **at most two per run**. If none are due, report "Nothing due until <next production date>" and stop. If the Drive tool is unavailable, use the earliest `planned` row in `episodes.csv` instead and say so in the report.
+2. An episode is **due** when `episodes.csv` says `planned` and its `production_due` is on or before today + 8 days.
+3. If Google Drive is available, read both sheets with `read_file_content`. Where a "Reel (main episode)" row's `Production due` differs from `episodes.csv`, the owner moved it: use the sheet's date and update `episodes.csv` to match.
+4. Build the due episodes in date order, **at most two per run**. If none are due, report "Nothing due until <next production_due>" and stop without changing files.
 
 ## 2. Fact sheet before any code
 
@@ -85,7 +85,7 @@ The picture must be a **new visual metaphor for this topic** in the house style.
 4. Run `python .claude/skills/new-tutorial/scripts/check_notebook.py --execute notebooks/bonds_to_devices/NN_*.ipynb` from the repository root. Every line must be OK or an accepted WARN.
 5. Set the episode to `built` in `episodes.csv`. In `notebooks/bonds_to_devices/README.md`, change the episode's row in the Episodes table to **Ready** and add sections headed `## Episode NN files`, `## Episode NN voice-over` and `## Episode NN post caption`, in the same format as Episode 1's. In the repository root `README.md`, add the episode to the "Bonds to Devices series" list.
 6. Commit with a clear message and push to the branch this session was given. Never push to `main`; do not open a pull request.
-7. Create one Google Doc in the Drive folder (`parentId` above) titled `Episode NN – ready to post` (two digits, e.g. `Episode 02 – ready to post`), with the caption, voice-over, the video path, the branch and commit, and any open questions. Use `create_file` with `textContent` and `contentMimeType: text/plain`.
+7. If Google Drive is available, create one Google Doc in the Drive folder (`parentId` above) titled `Episode NN – ready to post` (two digits, e.g. `Episode 02 – ready to post`), with the caption, voice-over, the video path, the branch and commit, and any open questions. Use `create_file` with `textContent` and `contentMimeType: text/plain`.
 
 ## 6. Report
 

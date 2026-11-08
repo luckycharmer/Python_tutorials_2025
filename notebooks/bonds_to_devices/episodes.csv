@@ -1,32 +1,32 @@
-episode,season,slug,title,one_idea,status
-1,1,ep01_h2_bond,Why hydrogen comes in pairs,Atoms bond because the pair has lower energy,built
-2,1,ep02_bond_spring,The bond is a spring,Bonds vibrate at fixed frequencies; Raman light reveals them; heavier isotopes vibrate slower,built
-3,1,ep03_atoms_to_crystal,From two atoms to a crystal,Many atoms split sharp levels into bands,planned
-4,1,ep04_band_gap,Why glass is clear and silicon is not,The band gap decides colour and conduction,planned
-5,1,ep05_doping,Doping: one atom in a million,Tiny impurity levels control conductivity,planned
-6,1,ep06_pn_junction,The one-way street,A p-n junction passes current one way (Shockley diode equation),planned
-7,1,ep07_photodetector,"Light in, current out",A photon makes an electron-hole pair; responsivity limit,planned
-8,1,ep08_real_device,Measuring a real device,Turning an I-V sweep into device numbers,planned
-9,2,ep09_uncertainty,"Squeeze the position, lose the speed",Heisenberg uncertainty for a confined electron,planned
-10,2,ep10_quantum_dots,Why tiny crystals glow different colours,Confinement raises the energy gap as size shrinks,planned
-11,2,ep11_tunnelling,Walking through walls,Tunnelling probability falls exponentially with barrier width,planned
-12,2,ep12_hydrogen_lines,Hydrogen's barcode,Spectral lines from energy level differences (Rydberg formula),planned
-13,2,ep13_pauli,Why atoms have a size,Pauli exclusion forces electrons into higher shells,planned
-14,2,ep14_photoelectric,"One photon, one electron",Photoelectric effect: threshold frequency and work function,planned
-15,2,ep15_de_broglie,An electron's wavelength vs a cricket ball's,de Broglie wavelength lambda = h/p,planned
-16,2,ep16_spin,The electron's tiny magnet,Spin and magnetic moment; two orientations in a field,planned
-17,3,ep17_blue_sky,Why the sky is blue,Rayleigh scattering grows as 1/lambda^4,planned
-18,3,ep18_green_leaves,Why leaves are green,"Chlorophyll absorbs red and blue, reflects green",planned
-19,3,ep19_led_colour,How an LED picks its colour,Photon energy equals the band gap: lambda = hc/Eg,planned
-20,3,ep20_laser,How a laser works,Stimulated emission and population inversion,planned
-21,3,ep21_glow,Glow-in-the-dark vs fluorescent,Fast versus slow (forbidden) emission,planned
-22,3,ep22_hot_glow,"Why hot metal glows red, then white",Blackbody peak shifts with temperature (Wien's law),planned
-23,3,ep23_fibre,Light trapped in glass,Total internal reflection and the critical angle,planned
-24,3,ep24_bent_straw,Why a straw looks bent,Refraction and Snell's law,planned
-25,4,ep25_solar_limit,The solar cell speed limit,Shockley-Queisser efficiency limit versus band gap,planned
-26,4,ep26_perovskite,Perovskite solar cells,Tunable band gap and fast efficiency gains,planned
-27,4,ep27_graphene,Graphene: one atom thick,Single-layer carbon absorbs about 2.3% of light,planned
-28,4,ep28_camera_sensor,How a phone camera counts photons,Pixels convert photons to electrons (quantum efficiency),planned
-29,4,ep29_soap_bubble,Soap bubble colours,Thin-film interference depends on thickness,planned
-30,4,ep30_four_point_probe,Measuring resistance properly,Four-point probe removes contact resistance,planned
-31,4,ep31_responsivity,A photodetector's colour fingerprint,Responsivity versus wavelength,planned
+episode,season,slug,title,one_idea,production_due,post_date,status
+1,1,ep01_h2_bond,Why hydrogen comes in pairs,Atoms bond because the pair has lower energy,2026-11-12,2026-11-17,built
+2,1,ep02_bond_spring,The bond is a spring,Bonds vibrate at fixed frequencies; Raman light reveals them; heavier isotopes vibrate slower,2026-11-19,2026-11-24,built
+3,1,ep03_atoms_to_crystal,From two atoms to a crystal,Many atoms split sharp levels into bands,2026-11-26,2026-12-01,planned
+4,1,ep04_band_gap,Why glass is clear and silicon is not,The band gap decides colour and conduction,2026-12-03,2026-12-08,planned
+5,1,ep05_doping,Doping: one atom in a million,Tiny impurity levels control conductivity,2026-12-10,2026-12-15,planned
+6,1,ep06_pn_junction,The one-way street,A p-n junction passes current one way (Shockley diode equation),2026-12-17,2026-12-22,planned
+7,1,ep07_photodetector,"Light in, current out",A photon makes an electron-hole pair; responsivity limit,2026-12-31,2027-01-05,planned
+8,1,ep08_real_device,Measuring a real device,Turning an I-V sweep into device numbers,2027-01-07,2027-01-12,planned
+9,2,ep09_uncertainty,"Squeeze the position, lose the speed",Heisenberg uncertainty for a confined electron,2027-01-14,2027-01-19,planned
+10,2,ep10_quantum_dots,Why tiny crystals glow different colours,Confinement raises the energy gap as size shrinks,2027-01-17,2027-01-22,planned
+11,2,ep11_tunnelling,Walking through walls,Tunnelling probability falls exponentially with barrier width,2027-01-21,2027-01-26,planned
+12,2,ep12_hydrogen_lines,Hydrogen's barcode,Spectral lines from energy level differences (Rydberg formula),2027-01-24,2027-01-29,planned
+13,2,ep13_pauli,Why atoms have a size,Pauli exclusion forces electrons into higher shells,2027-01-28,2027-02-02,planned
+14,2,ep14_photoelectric,"One photon, one electron",Photoelectric effect: threshold frequency and work function,2027-01-31,2027-02-05,planned
+15,2,ep15_de_broglie,An electron's wavelength vs a cricket ball's,de Broglie wavelength lambda = h/p,2027-02-04,2027-02-09,planned
+16,2,ep16_spin,The electron's tiny magnet,Spin and magnetic moment; two orientations in a field,2027-02-07,2027-02-12,planned
+17,3,ep17_blue_sky,Why the sky is blue,Rayleigh scattering grows as 1/lambda^4,2027-02-11,2027-02-16,planned
+18,3,ep18_green_leaves,Why leaves are green,"Chlorophyll absorbs red and blue, reflects green",2027-02-14,2027-02-19,planned
+19,3,ep19_led_colour,How an LED picks its colour,Photon energy equals the band gap: lambda = hc/Eg,2027-02-18,2027-02-23,planned
+20,3,ep20_laser,How a laser works,Stimulated emission and population inversion,2027-02-21,2027-02-26,planned
+21,3,ep21_glow,Glow-in-the-dark vs fluorescent,Fast versus slow (forbidden) emission,2027-02-25,2027-03-02,planned
+22,3,ep22_hot_glow,"Why hot metal glows red, then white",Blackbody peak shifts with temperature (Wien's law),2027-02-28,2027-03-05,planned
+23,3,ep23_fibre,Light trapped in glass,Total internal reflection and the critical angle,2027-03-04,2027-03-09,planned
+24,3,ep24_bent_straw,Why a straw looks bent,Refraction and Snell's law,2027-03-07,2027-03-12,planned
+25,4,ep25_solar_limit,The solar cell speed limit,Shockley-Queisser efficiency limit versus band gap,2027-03-11,2027-03-16,planned
+26,4,ep26_perovskite,Perovskite solar cells,Tunable band gap and fast efficiency gains,2027-03-14,2027-03-19,planned
+27,4,ep27_graphene,Graphene: one atom thick,Single-layer carbon absorbs about 2.3% of light,2027-03-18,2027-03-23,planned
+28,4,ep28_camera_sensor,How a phone camera counts photons,Pixels convert photons to electrons (quantum efficiency),2027-03-21,2027-03-26,planned
+29,4,ep29_soap_bubble,Soap bubble colours,Thin-film interference depends on thickness,2027-03-25,2027-03-30,planned
+30,4,ep30_four_point_probe,Measuring resistance properly,Four-point probe removes contact resistance,2027-03-28,2027-04-02,planned
+31,4,ep31_responsivity,A photodetector's colour fingerprint,Responsivity versus wavelength,2027-04-01,2027-04-06,planned
