@@ -12,7 +12,7 @@ Because the video and the notebook import the same physics module, every number 
 | # | Title | The one idea | Key checked number | Status |
 |---|---|---|---|---|
 | 1 | Why hydrogen comes in pairs | Atoms bond because the pair has lower energy | H₂ bond energy 4.48 eV (432 kJ/mol) at 74 pm | **Ready** |
-| 2 | The bond is a spring | Bonds vibrate at fixed frequencies; light reveals them | H₂ vibration 4161 cm⁻¹ (Raman); D₂ is slower | Planned |
+| 2 | The bond is a spring | Bonds vibrate at fixed frequencies; Raman light reveals them; heavier isotopes vibrate slower | H₂ vibration 4161 cm⁻¹ (532 nm in, 683 nm out); D₂ 2994 cm⁻¹ | **Ready** |
 | 3 | From two atoms to a crystal | Many atoms turn sharp levels into bands | Silicon: 5 × 10²² atoms per cm³ | Planned |
 | 4 | Why glass is clear and silicon is not | The band gap decides colour and conduction | Si gap 1.12 eV, GaAs 1.42 eV, SiO₂ about 9 eV | Planned |
 | 5 | Doping: one atom in a million | Tiny impurities control conductivity | Intrinsic Si about 10¹⁰ carriers per cm³ at 300 K | Planned |
@@ -81,3 +81,54 @@ Timed to the on-screen scenes. Read at a relaxed pace.
 - The spring and the rolling ball are teaching pictures. The spring is not a physical object, and the ball shows the pair's energy at each gap. All on-screen energies come from the Morse curve.
 - "Where H₂ actually sits" marks the lowest allowed vibration level, 0.27 eV above the valley floor.
 - The swing in the video is slowed by about 1.6 × 10¹⁴ times and drawn as a classical motion.
+
+## Episode 2 files
+
+| File | What it is |
+|---|---|
+| `02_the_bond_is_a_spring.ipynb` | Class notebook: frequency and period, bond stiffness, anharmonicity, Raman shift, isotope prediction, validation checks |
+| `bond_spring.py` | Constants and spring/Raman functions, shared by the notebook and the video |
+| `make_reel_ep02.py` | Renders the video to `output/ep02_bond_spring.mp4` (a copy is kept in `videos/`) |
+| `facts/ep02.md` | Fact sheet: every on-screen number with two sources, and the trap checks |
+
+```bash
+python make_reel_ep02.py                     # full video
+python make_reel_ep02.py --stills 2.5 7.5 12.5 17.5 22.5 26.5   # PNG previews
+```
+
+The picture is a ball on a spring that draws its own wave on moving paper, a green laser beam that comes back red and lands on a colour ruler, and finally a heavier deuterium ball that draws a slower wave. The equation strip shows the spring formula, ν = c ν̃, the laser photon energy, the Raman energy balance and the H₂/D₂ ratio, with the numbers filled in from `bond_spring.py`.
+
+## Episode 2 voice-over (optional, about 28 seconds)
+
+Timed to the on-screen scenes. Read at a relaxed pace.
+
+| Time | Say |
+|---|---|
+| 0–5 s | A chemical bond is a spring. Pull the two atoms apart and it pulls them back. Let go, and it bounces. |
+| 5–10 s | And it always rings at the same note. Hydrogen swings about a hundred and twenty-five trillion times a second. Every hydrogen molecule, the same. |
+| 10–15 s | How do we hear that note? Hydrogen has no electric dipole, so infrared light barely notices it. So we shine a green laser instead. |
+| 15–20 s | Most of the light bounces off unchanged. But a few photons give the bond one step of vibration, and come out red: green in, red out. |
+| 20–24.5 s | Swap in deuterium, twice as heavy. Same spring, heavier ball, lower note: about one point four times slower. |
+| 24.5–28 s | Next time: from two atoms to a crystal. |
+
+## Episode 2 post caption (copy and paste)
+
+> A chemical bond is a spring, and it rings at one fixed note.
+>
+> The hydrogen molecule vibrates about 125 trillion times a second (4161 cm⁻¹). H₂ has no electric dipole, so infrared light barely sees it. Shine a green 532 nm laser on it instead: a few scattered photons hand the bond one step of vibration (0.52 eV) and come out red, at 683 nm. That colour shift is Raman scattering, and it measures the bond's note.
+>
+> Swap hydrogen for deuterium, twice as heavy: same spring, lower note, 2994 cm⁻¹. The ratio is 1.39, just under √2, because a real bond is not quite a perfect spring.
+>
+> Every number here was calculated in Python from measured data. The notebook and code are free on GitHub: github.com/luckycharmer/Python_tutorials_2025
+>
+> Episode 2 of Bonds to Devices: from a single chemical bond to a working light sensor.
+>
+> #Physics #Chemistry #Raman #Spectroscopy #Hydrogen #Python #ScienceEducation #COMSATS
+
+## Episode 2 accuracy notes for presenters
+
+- **One ball, two atoms.** The single ball on a spring stands for the two atoms swinging against each other (the reduced mass). The wave on the paper shows how far the bond is stretched over time, slowed by about 1.2 × 10¹⁴ times. The D₂ wave uses the same slowdown, so the two speeds are in the true ratio.
+- **Which number is the note?** 4161 cm⁻¹ is the measured spacing of the lowest two vibrational levels, and it is what Raman scattering measures. The textbook ωₑ = 4401 cm⁻¹ describes an ideal spring and is not shown on screen.
+- **Infrared.** H₂ is not completely invisible to infrared: very weak quadrupole lines exist. "Barely sees it" is the accurate wording.
+- **Green in, red out.** Only a tiny fraction of the scattered light is shifted; the red peaks on the colour ruler are drawn enlarged. The blue-shifted (anti-Stokes) line is negligible at room temperature and is not shown.
+- **Not exactly √2.** The mass doubles, so a perfect spring would be √2 = 1.41 times slower. The measured ratio is 1.39 because the real bond softens as it stretches.
