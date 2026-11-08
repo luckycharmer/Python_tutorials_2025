@@ -26,6 +26,7 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
+matplotlib.rcParams["mathtext.fontset"] = "stix"
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import font_manager
@@ -106,6 +107,33 @@ SCENES = [
      "Episode 2: the bond as a spring,\nand how light reveals its vibration."),
 ]
 DURATION_S = SCENES[-1][1]
+
+ZERO_POINT_EV = LEVEL0_EV + DEPTH_EV
+HALF_H_NU_EV = 0.5 * h2.H_EV_S * FREQ_HZ
+
+
+def _mant_exp(x):
+    exp = int(np.floor(np.log10(x)))
+    return f"{x / 10**exp:.1f}", exp
+
+
+_pairs_m, _pairs_e = _mant_exp(PAIRS_PER_LITRE)
+_freq_m, _freq_e = _mant_exp(FREQ_HZ)
+
+# (caption, equation) for each scene; None on the end card
+EQUATIONS = [
+    ("Ideal gas at 1 atm and 25 °C",
+     rf"$N/V = P\,/\,k_BT \approx {_pairs_m}\times10^{{{_pairs_e}}}\ \mathrm{{L^{{-1}}}}$"),
+    ("Energy curve (Morse model)",
+     r"$E(r) = D_e\left[\left(1-e^{-a(r-r_e)}\right)^2-1\right]$"),
+    (rf"Zero-point energy,  $\nu = {_freq_m}\times10^{{{_freq_e}}}$ Hz",
+     rf"$E_0 \approx \frac{{1}}{{2}}h\nu = {HALF_H_NU_EV:.2f}\ \mathrm{{eV}}$"),
+    ("Energy to break the bond",
+     rf"$D_0 = D_e - E_0 = {DEPTH_EV:.2f} - {ZERO_POINT_EV:.2f} = {DEPTH_EV - ZERO_POINT_EV:.2f}\ \mathrm{{eV}}$"),
+    ("Bond energy against thermal energy at 25 °C",
+     rf"$D_0\,/\,k_BT = {BREAK_EV:.2f}\,/\,{KT_ROOM_EV:.4f} \approx {BREAK_EV / KT_ROOM_EV:.0f}$"),
+    None,
+]
 
 
 def ease(t):
@@ -210,7 +238,7 @@ def build_figure(logo=None):
     art["stage"] = st
 
     # energy valley
-    ax = fig.add_axes([0.10, 0.20, 0.70, 0.36])
+    ax = fig.add_axes([0.10, 0.31, 0.70, 0.255])
     ax.set_facecolor(PAPER)
     r = np.linspace(52, 330, 700)
     e = h2.morse_energy_eV(r)
@@ -243,6 +271,17 @@ def build_figure(logo=None):
     ax.set_xlabel("gap between the two nuclei (picometres)", color=SOFT, family=SANS,
                   size=21, labelpad=12)
     art["valley"] = ax
+
+    # equation strip: its own full-width card below the valley
+    eqa = fig.add_axes([0.05, 0.158, 0.90, 0.078])
+    eqa.set_xlim(0, 1)
+    eqa.set_ylim(0, 1)
+    eqa.set_axis_off()
+    art["eq_box"] = eqa.add_patch(FancyBboxPatch(
+        (0, 0), 1, 1, boxstyle="round,pad=0,rounding_size=0.12", mutation_aspect=0.155,
+        fc="#ffffff", ec="#d9cfbc", lw=1.8))
+    art["eq_cap"] = eqa.text(0.035, 0.76, "", color=SOFT, family=SANS, size=18, va="center")
+    art["eq"] = eqa.text(0.035, 0.34, "", color=INK, size=36, va="center")
     ax.text(0.5, 0.30, WATERMARK_CENTRE, transform=ax.transAxes, ha="center", va="center",
             color=INK, alpha=0.13, family=SANS, size=14, weight="semibold", zorder=2)
     ax.text(0.5, 0.62, WATERMARK_CORNER, transform=ax.transAxes, ha="center", va="center",
@@ -250,7 +289,7 @@ def build_figure(logo=None):
             zorder=2)
 
     # energy gauge, sharing the valley's energy scale
-    g = fig.add_axes([0.84, 0.20, 0.06, 0.36])
+    g = fig.add_axes([0.84, 0.31, 0.06, 0.255])
     g.set_xlim(0, 1)
     g.set_ylim(ymin, ymax)
     g.set_axis_off()
@@ -260,9 +299,9 @@ def build_figure(logo=None):
     g.text(0.5, 0.35, "energy", color=SOFT, family=SANS, size=19, ha="center")
     g.text(0.5, -DEPTH_EV - 0.35, f"−{DEPTH_EV:.2f}", color=SOFT, family=SANS, size=16,
            ha="center", va="top")
-    art["gauge_val"] = fig.text(0.87, 0.175, "", color=CORAL, family=SANS, size=30,
+    art["gauge_val"] = fig.text(0.87, 0.285, "", color=CORAL, family=SANS, size=30,
                                 weight="bold", ha="center", va="top")
-    art["gauge_unit"] = fig.text(0.87, 0.153, "eV", color=SOFT, family=SANS, size=19, ha="center", va="top")
+    art["gauge_unit"] = fig.text(0.87, 0.263, "eV", color=SOFT, family=SANS, size=19, ha="center", va="top")
     (art["climb"],) = g.plot([0.92, 0.92], [LEVEL0_EV, 0], color=GREEN, lw=4, alpha=0,
                              solid_capstyle="butt")
     art["climb_label"] = ax.text(250, -2.3, f"{BREAK_EV:.2f} eV\nto climb out", color=GREEN,
@@ -331,6 +370,12 @@ def draw_frame(art, t):
     art["sub"].set_text(sub)
     art["sub"].set_alpha(a)
     art["sub"].set_y(0.83 - 0.05 * head.count("\n"))
+    eq = EQUATIONS[i]
+    for key in ("eq_box", "eq_cap", "eq"):
+        art[key].set_alpha(a if eq else 0)
+    if eq:
+        art["eq_cap"].set_text(eq[0])
+        art["eq"].set_text(eq[1])
 
     # atoms and spring
     xa, xb = -d / 2, d / 2

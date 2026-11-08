@@ -39,7 +39,7 @@ python make_reel_ep01.py --stills 2 10 20  # quick PNG previews at those seconds
 python make_reel_ep01.py --logo path/to/logo.png  # use a logo stored elsewhere
 ```
 
-The end card credits Dr Junaid Ali and the Optoelectronics Research Laboratory; edit `PRESENTER`, `ROLE_LINE`, `LAB_LINE` and `UNI_LINE` near the top of the script to change it. Every frame carries "© Dr Junaid Ali" in the top-right corner (with the logo, if supplied) and a faint watermark over the energy valley, so the credit survives if someone trims the end card. Your name and copyright are also written into the MP4 file's metadata. Change the wording with `WATERMARK_CORNER` and `WATERMARK_CENTRE`. The `output/` folder is not committed. The video is silent so you can add music or your own voice in CapCut, Canva or the Facebook editor.
+The end card credits Dr Junaid Ali and the Optoelectronics Research Laboratory; edit `PRESENTER`, `ROLE_LINE`, `LAB_LINE` and `UNI_LINE` near the top of the script to change it. Each scene shows its equation in a strip below the chart (ideal gas, Morse curve, zero-point energy, bond energy, bond energy against thermal energy), with the numbers filled in from the same code. Every frame carries "© Dr Junaid Ali" in the top-right corner (with the logo, if supplied) and a faint watermark over the energy valley, so the credit survives if someone trims the end card. Your name and copyright are also written into the MP4 file's metadata. Change the wording with `WATERMARK_CORNER` and `WATERMARK_CENTRE`. The `output/` folder is not committed. The video is silent so you can add music or your own voice in CapCut, Canva or the Facebook editor.
 
 ## Episode 1 voice-over (optional, about 28 seconds)
 
