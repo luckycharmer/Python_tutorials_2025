@@ -15,7 +15,7 @@ Both use clearly labelled synthetic data.
 
 ## Bonds to Devices series
 
-A short series that goes from a single chemical bond to a working photodetector. Each episode pairs a class notebook with a 25-second vertical video, and both are built from the same code. See [notebooks/bonds_to_devices/](notebooks/bonds_to_devices/README.md).
+A short series that goes from a single chemical bond to a working photodetector. Each episode pairs a class notebook with a short vertical video, and both are built from the same code. See [notebooks/bonds_to_devices/](notebooks/bonds_to_devices/README.md).
 
 - [Episode 1 — Why hydrogen comes in pairs](notebooks/bonds_to_devices/01_why_hydrogen_comes_in_pairs.ipynb): the H₂ energy curve, zero-point energy, bond energy and a comparison with thermal energy, all calculated from measured spectroscopic constants. Every notebook is checked automatically on each pull request (see [.github/workflows/check-notebooks.yml](.github/workflows/check-notebooks.yml)).
 

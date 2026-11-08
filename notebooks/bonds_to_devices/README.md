@@ -3,7 +3,7 @@
 A short series that starts with two hydrogen atoms and ends with a working photodetector. Each episode has two parts made from the same Python code:
 
 - a **notebook** for class, which follows the repository's release criteria; and
-- a **vertical video** (1080 × 1920, about 25 seconds) for a general audience, for Facebook Reels, Instagram, YouTube Shorts or a lecture opener.
+- a **vertical video** (1080 × 1920, about 28 seconds) for a general audience, for Facebook Reels, Instagram, YouTube Shorts or a lecture opener.
 
 Because the video and the notebook import the same physics module, every number on screen can be traced to a notebook cell and a published reference.
 
@@ -39,18 +39,18 @@ python make_reel_ep01.py --stills 2 10 20  # quick PNG previews at those seconds
 
 The `output/` folder is not committed. The video is silent so you can add music or your own voice in CapCut, Canva or the Facebook editor.
 
-## Episode 1 voice-over (optional, about 25 seconds)
+## Episode 1 voice-over (optional, about 28 seconds)
 
 Timed to the on-screen scenes. Read at a relaxed pace.
 
 | Time | Say |
 |---|---|
-| 0–3 s | Why does hydrogen always come in pairs? Start with two lone hydrogen atoms. |
-| 3–8 s | Bring them closer. Their electron clouds overlap, and the energy drops. |
-| 8–13 s | The lowest point is at seventy-four picometres. But the pair never sits still. It keeps vibrating. |
-| 13–18 s | Pull them apart, and you have to pay four point four eight electronvolts to break the bond. |
-| 18–22 s | Everyday heat gives each molecule about a hundred and seventieth of that. So hydrogen stays as H₂. |
-| 22–26 s | Next time: the bond as a spring, and how light reveals it. |
+| 0–4 s | Hydrogen gas is made of pairs. Every litre holds about twenty-five thousand billion billion of them. Why not single atoms? |
+| 4–9 s | Let two atoms meet. The closer they get, the lower their energy, like a ball rolling downhill. |
+| 9–14 s | The valley floor is at seventy-four picometres. But they never rest there. They keep swinging. |
+| 14–19 s | To prise them apart, you have to climb out of the valley: four point four eight electronvolts. |
+| 19–24 s | A thermal kick at room temperature carries less than one hundred and seventieth of that. So they stay paired. |
+| 24–28 s | Next time: the bond as a spring, and how light reveals it. |
 
 ## Episode 1 post caption (copy and paste)
 
@@ -68,5 +68,6 @@ Timed to the on-screen scenes. Read at a relaxed pace.
 
 - **74 pm** is the bottom of the energy curve. A real molecule is always vibrating, so the bond length measured from its rotation spectrum is slightly longer, about 75 pm.
 - There are two depths. The curve's bottom is 4.75 eV below two free atoms, but the molecule can't sit there: its lowest allowed level is 0.27 eV higher. That is why the bond energy is 4.48 eV, not 4.75 eV.
-- The glowing cloud is the simple "1s + 1s" textbook picture. It shows where the electrons gather, but its own energy numbers are poor. All on-screen energies come from the Morse curve.
-- The vibration in the video is slowed by about 1.5 × 10¹⁴ times and drawn as a classical swing.
+- The spring and the rolling ball are teaching pictures. The spring is not a physical object, and the ball shows the pair's energy at each gap. All on-screen energies come from the Morse curve.
+- "Where H₂ actually sits" marks the lowest allowed vibration level, 0.27 eV above the valley floor.
+- The swing in the video is slowed by about 1.6 × 10¹⁴ times and drawn as a classical motion.
