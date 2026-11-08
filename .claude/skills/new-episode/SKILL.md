@@ -23,9 +23,10 @@ The Drive sheets cannot be edited cell by cell from here. Treat them as read-onl
 
 ## 1. Pick the work
 
-1. Read both Drive sheets with the Google Drive `read_file_content` tool. Collect the "Reel (main episode)" rows.
-2. An episode is **due** when its `Production due` date is on or before today + 8 days and `episodes.csv` says `planned`.
-3. Build the due episodes in date order, **at most two per run**. If none are due, report "Nothing due until <next production date>" and stop. If the Drive tool is unavailable, use the earliest `planned` row in `episodes.csv` instead and say so in the report.
+1. If the owner names an episode, build that one and skip the rest of this step.
+2. Read both Drive sheets with the Google Drive `read_file_content` tool. Collect the "Reel (main episode)" rows.
+3. An episode is **due** when its `Production due` date is on or before today + 8 days and `episodes.csv` says `planned`.
+4. Build the due episodes in date order, **at most two per run**. If none are due, report "Nothing due until <next production date>" and stop. If the Drive tool is unavailable, use the earliest `planned` row in `episodes.csv` instead and say so in the report.
 
 ## 2. Fact sheet before any code
 
