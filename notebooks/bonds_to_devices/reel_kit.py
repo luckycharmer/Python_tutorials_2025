@@ -14,6 +14,29 @@ Layout regions (figure fractions, 0 = bottom, 1 = top) an episode may draw in:
     CONTENT = (0.255, 0.745)   main animated picture
     EXTRA   = (0.045, 0.145)   below the equation strip (bars, legends)
 
+Cheat-sheet (enough to write an episode without reading the rest of this file):
+
+    Scene(start, end, head, sub, eq_caption="", eq="")   times in seconds
+    head  <= 2 lines of ~18 characters;  sub <= 2 lines of ~42 characters
+    eq    one mathtext string, <= ~45 rendered characters
+    note  footer text, <= 95 characters
+    Scenes run 22-26 s; end_teaser adds a 3.5 s end card after the last scene.
+    With a 2-line head and 2-line sub, keep drawings below y = 0.715 (the
+    CONTENT top of 0.745 is only safe for 1-line heads).
+
+    kit.content_axes(left, width, bottom, top)   axes inside CONTENT
+    kit.extra_axes()                             axes inside EXTRA
+    kit.style_axis(ax, xlabel, ylabel)           house tick/label look
+    kit.end_fade(t)    0 -> 1 as the end card covers the picture; fade
+                       any fig.text you added with (1 - end_fade)
+    kit.art["note"]    the footer text artist (set_alpha to hide it)
+    ease(x), window(t, start, end), sci(x), sci_tex(x), minus(s)
+    colours: PAPER INK SOFT CORAL SAND WATER GREEN; fonts: SANS DISPLAY
+
+    python make_reel_epNN.py --sheet    stills at every scene's midpoint and
+                                        the end card, as one contact sheet:
+                                        output/<slug>_sheet.png
+
 Minimal episode script:
 
     import reel_kit as rk
@@ -311,7 +334,7 @@ def load_logo(path):
 
 
 def render(episode, slug, title, scenes, build, update, note, end_teaser=None,
-           stills=None, logo_path=DEFAULT_LOGO):
+           stills=None, logo_path=DEFAULT_LOGO, sheet=False):
     OUT_DIR.mkdir(exist_ok=True)
     logo = load_logo(logo_path)
     print("logo:", logo_path if logo is not None else "none found, end card shows name only")
@@ -323,12 +346,28 @@ def render(episode, slug, title, scenes, build, update, note, end_teaser=None,
         kit.draw_common(t)
         update(art, t, kit)
 
+    if sheet:
+        stills = [round((s.start + s.end) / 2, 2) for s in kit.scenes]
+        stills[-1] = round(kit.duration - 0.5, 2)
     if stills:
+        paths = []
         for t in stills:
             frame(t)
             path = OUT_DIR / f"{slug}_still_{t:05.1f}s.png"
             kit.fig.savefig(path, facecolor=PAPER)
+            paths.append(path)
             print(f"wrote {path}")
+        if sheet:
+            from PIL import Image
+            tiles = [Image.open(p).convert("RGB").resize((360, 640)) for p in paths]
+            board = Image.new("RGB", (360 * len(tiles), 640), PAPER)
+            for k, tile in enumerate(tiles):
+                board.paste(tile, (360 * k, 0))
+            out = OUT_DIR / f"{slug}_sheet.png"
+            board.save(out)
+            for p in paths:
+                p.unlink()
+            print(f"wrote {out}")
         return
 
     ffmpeg = shutil.which("ffmpeg")
@@ -361,7 +400,9 @@ def main(**episode):
     """Command line shared by every episode script."""
     ap = argparse.ArgumentParser(description=f"Render episode {episode['episode']}.")
     ap.add_argument("--stills", nargs="+", type=float, help="export PNG frames at these seconds")
+    ap.add_argument("--sheet", action="store_true",
+                    help="one contact sheet: every scene's midpoint plus the end card")
     ap.add_argument("--logo", default=DEFAULT_LOGO,
                     help="lab logo image (default: assets/lab_logo.png in this folder)")
     args = ap.parse_args()
-    render(stills=args.stills, logo_path=args.logo, **episode)
+    render(stills=args.stills, logo_path=args.logo, sheet=args.sheet, **episode)

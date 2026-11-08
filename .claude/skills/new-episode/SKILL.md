@@ -15,9 +15,11 @@ Each episode is one physics idea delivered twice from the same code: a 25–30 s
 |---|---|
 | Posting schedule (owner edits it) | Google Drive folder "Bonds to Devices": sheet `18Zo4BNFqM7mbp3LDDA4Ek3BOf39cAE1T_hHQF77YiaM` (episodes 1–8) and sheet `1e05aud0x9DDzMaczViMrJr8Py93VyGS3CCbvm1E-BXs` (episodes 9–31). Drive folder id `1X2Er-mOiNw6e_Q1FxMKctF4FlscC62oM` |
 | Which episodes are already built | `notebooks/bonds_to_devices/episodes.csv`, column `status` (`planned` or `built`) |
-| Shared style and renderer | `notebooks/bonds_to_devices/reel_kit.py` (read only its top docstring) |
+| Shared style and renderer | `notebooks/bonds_to_devices/reel_kit.py`. Its top docstring has a cheat-sheet with every field, limit and helper you need; read that, not the whole file |
 | Worked example to copy | `make_reel_ep01.py`, `h2_morse.py`, `01_why_hydrogen_comes_in_pairs.ipynb` |
 | Notebook rules and checker | the `new-tutorial` skill and `.claude/skills/new-tutorial/scripts/check_notebook.py` |
+
+All episode files live in `notebooks/bonds_to_devices/` and every command below runs from that folder unless it says otherwise. This overrides the `new-tutorial` skill's folder rule.
 
 The Drive sheets cannot be edited cell by cell from here. Treat them as read-only schedule; record build progress in `episodes.csv`.
 
@@ -33,30 +35,37 @@ The Drive sheets cannot be edited cell by cell from here. Treat them as read-onl
 Write `notebooks/bonds_to_devices/facts/epNN.md` with:
 
 - the one idea (from `episodes.csv`), in one sentence a 12-year-old could repeat;
-- every number that will appear on screen, its unit, its value and **two independent sources**, preferring primary data (NIST, CODATA, peer-reviewed papers, standard textbooks). If two sources disagree, use the primary one and note the spread;
+- every **measured** number that will appear on screen, its unit, its value and **two independent sources**, preferring primary data (NIST, CODATA, peer-reviewed papers). Look sources up with WebSearch and WebFetch; that is expected. A source you have not opened in this run is not a source: verify it or leave it out. If two sources disagree, use the primary one and note the spread;
+- every **derived** number (computed from measured ones) with its arithmetic instead of a second source;
+- every **conventional** choice (a 532 nm laser, 25 °C, 1 atm) marked as a choice;
 - the physics claims the script makes, each checked for a trap: selection rules, sign conventions, idealisations, "always/never" wording.
+
+Use the measured value of anything a viewer could observe (for example the H₂ fundamental, 4161 cm⁻¹) and keep model constants (the harmonic ωₑ, 4401 cm⁻¹) inside model equations. Never show both kinds side by side as if they were the same quantity.
 
 Lesson from Episode 1: an end card once said infrared light shows the H₂ vibration. H₂ has no dipole, so it is infrared-inactive and only Raman sees it. Check every claim like this before it reaches the script.
 
 ## 3. Build the three files
 
-Use the next episode number `NN` and the `slug` from `episodes.csv`.
+`NN` is the two-digit episode number and `slug` comes from `episodes.csv` (for example `ep02_bond_spring`). The topic name is the slug without `epNN_` (`bond_spring`).
 
-| File | Contents |
+| File (in `notebooks/bonds_to_devices/`) | Contents |
 |---|---|
-| `<topic>.py` physics module | Constants with units in names and a sources docstring; small functions. No plotting. |
-| `NN_<topic>.ipynb` | Follow the `new-tutorial` skill exactly. Title `# Tutorial NN (Bonds to Devices) — <title>`. Import the physics module. Validate against a measured value the model was not given. |
-| `make_reel_epNN.py` | Copy the structure of `make_reel_ep01.py`: `SCENES`, `build(fig, kit)`, `update(art, t, kit)`, then `rk.main(...)`. Import every number from the physics module. |
+| `facts/epNN.md` | The fact sheet from step 2 |
+| `<topic>.py`, e.g. `bond_spring.py` | Physics module: constants with units in names and a sources docstring; small functions. No plotting. |
+| `NN_<title in snake case>.ipynb`, e.g. `02_the_bond_is_a_spring.ipynb` | Follow the `new-tutorial` skill's structure and checker. Title `# Tutorial NN (Bonds to Devices) — <title>`. Import the physics module. Validate against a measured value the model was not given. Import `display` from `IPython.display` if you use it. |
+| `make_reel_epNN.py` | Copy the structure of `make_reel_ep01.py`: `SCENES`, `build(fig, kit)`, `update(art, t, kit)`, then `rk.main(...)`. Episode-specific drawing helpers live in this script. Import every number from the physics module. |
 
 The scene list is the script. Shape it like this:
 
-- 5 scenes plus the kit's end card, 25–30 s total, 4–6 s per scene;
+- 5 scenes lasting 22–26 s in total (4–6 s each); `end_teaser` adds a 3.5 s end card, so the video is 25–30 s;
 - headline: at most 2 lines of about 18 characters; subline: at most 2 lines of about 42 characters;
 - one equation per scene in `Scene.eq` (mathtext), at most about 45 rendered characters, numbers filled in with f-strings from the module;
 - `end_teaser` names the next episode from `episodes.csv`;
-- `note` says where the numbers come from and how much motion is slowed, if any.
+- `note` says where the numbers come from and how much motion is slowed, if any, in at most 95 characters;
+- numbers in headlines and sublines are in words or plain figures ("125 trillion", "74 pm"); scientific notation belongs in the equation strip;
+- anything drawn bigger or slower than reality is labelled on screen ("Raman peaks enlarged").
 
-Draw only inside `kit.content_axes(...)` (the CONTENT region) and `kit.extra_axes()`. The kit adds the header, equation strip, watermarks and end card itself.
+Draw only inside `kit.content_axes(...)` (the CONTENT region) and `kit.extra_axes()`. With a two-line headline and subline, keep drawings below y = 0.715. The kit adds the header, equation strip, watermarks and end card itself.
 
 ## 4. Originality gate (must pass before rendering)
 
@@ -70,13 +79,13 @@ The picture must be a **new visual metaphor for this topic** in the house style.
 
 ## 5. Check, render, record
 
-1. `python make_reel_epNN.py --stills <middle of each scene> <end card time>` and view **one** contact sheet of the stills. Fix overlaps, text running off the frame and unreadable equations. Repeat only for the frames you changed.
+1. `python make_reel_epNN.py --sheet` writes `output/<slug>_sheet.png` (every scene's midpoint plus the end card). View it once. Fix overlaps, text running off the frame and unreadable equations, then run `--sheet` again. At most three rounds.
 2. Render the full video once: `python make_reel_epNN.py`. Confirm with `ffprobe` that it is 1080×1920, 30 fps, 25–30 s, with the copyright tag.
 3. Copy `output/<slug>.mp4` to `videos/<slug>.mp4` (the `output/` folder is not committed).
 4. Run `python .claude/skills/new-tutorial/scripts/check_notebook.py --execute notebooks/bonds_to_devices/NN_*.ipynb` from the repository root. Every line must be OK or an accepted WARN.
-5. Set the episode to `built` in `episodes.csv`. Add a section to `notebooks/bonds_to_devices/README.md` with a timed voice-over table and a copy-ready post caption, in the same format as Episode 1's.
+5. Set the episode to `built` in `episodes.csv`. In `notebooks/bonds_to_devices/README.md`, change the episode's row in the Episodes table to **Ready** and add sections headed `## Episode NN files`, `## Episode NN voice-over` and `## Episode NN post caption`, in the same format as Episode 1's. In the repository root `README.md`, add the episode to the "Bonds to Devices series" list.
 6. Commit with a clear message and push to the branch this session was given. Never push to `main`; do not open a pull request.
-7. Create one Google Doc in the Drive folder titled `Episode NN – ready to post`, with the caption, voice-over, the video path in the repository and any open questions. Use `create_file` with `textContent` and `contentMimeType: text/plain`.
+7. Create one Google Doc in the Drive folder (`parentId` above) titled `Episode NN – ready to post` (two digits, e.g. `Episode 02 – ready to post`), with the caption, voice-over, the video path, the branch and commit, and any open questions. Use `create_file` with `textContent` and `contentMimeType: text/plain`.
 
 ## 6. Report
 
@@ -85,7 +94,7 @@ End with a short report: episodes built, the files, the numbers you checked and 
 ## Keep each run light
 
 - Read the top docstring of `reel_kit.py` and the example episode once; do not read them again.
-- One stills contact sheet per round, at most three rounds. Render the full MP4 once, at the end.
+- Use `--sheet` for previews; at most three rounds. Render the full MP4 once, at the end.
 - At most two episodes per run.
 - Do not upload videos to Drive: base64 uploads cost far more than they help. The video lives in `videos/` on GitHub.
 
@@ -98,4 +107,6 @@ End with a short report: episodes built, the files, the numbers you checked and 
 | A claim that is almost right (IR for H₂, "electrons orbit") | Fact sheet with two sources and a trap check, before code |
 | Headline or equation running off the frame | Respect the character limits; check the contact sheet |
 | Drawing outside CONTENT and covering the equation strip | Only `kit.content_axes` and `kit.extra_axes` |
+| Showing a model constant next to a measured value as if they were the same | Measured values on screen; model constants inside model equations |
+| Citing a source from memory | Open it with WebFetch in this run, or leave it out |
 | Rebuilding an episode that already exists | `episodes.csv` decides what is built, not the Drive sheet's Status |
