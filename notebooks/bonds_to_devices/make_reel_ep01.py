@@ -8,6 +8,10 @@ comes from h2_morse.py, the same module the class notebook uses.
 Usage (from this folder):
     python make_reel_ep01.py                     # writes output/ep01_h2_bond.mp4
     python make_reel_ep01.py --stills 2 10 20    # PNG frames at those seconds only
+    python make_reel_ep01.py --logo my_logo.png  # use a logo from another path
+
+The end card shows the presenter's name and, if assets/lab_logo.png exists,
+the lab logo beside it.
 
 Needs NumPy and Matplotlib (requirements.txt) plus the ffmpeg program
 (not a Python package; install it from ffmpeg.org or your package manager).
@@ -32,6 +36,13 @@ import h2_morse as h2
 # ---------------------------------------------------------------- settings
 WIDTH_PX, HEIGHT_PX, FPS = 1080, 1920, 30
 OUT_DIR = Path(__file__).resolve().parent / "output"
+DEFAULT_LOGO = Path(__file__).resolve().parent / "assets" / "lab_logo.png"
+
+# End-card credit (edit here if your title or lab name changes)
+PRESENTER = "Dr Junaid Ali"
+ROLE_LINE = "Associate Professor of Physics"
+LAB_LINE = "Optoelectronics Research Laboratory"
+UNI_LINE = "COMSATS University Islamabad"
 
 PAPER = "#f6f1e7"       # warm paper background
 INK = "#1d2a44"         # deep navy text and lines
@@ -146,7 +157,7 @@ def spring_xy(x1, x2, coils=6, amp=8.0, n=400):
     return x, y
 
 
-def build_figure():
+def build_figure(logo=None):
     fig = plt.figure(figsize=(WIDTH_PX / 100, HEIGHT_PX / 100), dpi=100, facecolor=PAPER)
     art = {}
 
@@ -233,7 +244,7 @@ def build_figure():
            ha="center", va="top")
     art["gauge_val"] = fig.text(0.87, 0.175, "", color=CORAL, family=SANS, size=30,
                                 weight="bold", ha="center", va="top")
-    fig.text(0.87, 0.153, "eV", color=SOFT, family=SANS, size=19, ha="center", va="top")
+    art["gauge_unit"] = fig.text(0.87, 0.153, "eV", color=SOFT, family=SANS, size=19, ha="center", va="top")
     (art["climb"],) = g.plot([0.92, 0.92], [LEVEL0_EV, 0], color=GREEN, lw=4, alpha=0,
                              solid_capstyle="butt")
     art["climb_label"] = ax.text(250, -2.3, f"{BREAK_EV:.2f} eV\nto climb out", color=GREEN,
@@ -256,10 +267,39 @@ def build_figure():
                            "Energies from measured H₂ constants (Morse model).  "
                            f"Swing slowed about {sci(SLOWDOWN)} times.",
                            color=SOFT, family=SANS, size=16)
-    art["end_url"] = fig.text(0.07, 0.125, "Free notebook and code\n"
-                              "github.com/luckycharmer/Python_tutorials_2025",
-                              color=INK, family=SANS, size=25, weight="semibold",
-                              linespacing=1.5, alpha=0, va="top")
+    # end card: a paper overlay hides the chart, then logo and presenter details fade in
+    cover = fig.add_axes([0.0, 0.0, 1.0, 0.765])
+    cover.set_xlim(0, 1)
+    cover.set_ylim(0, 1)
+    cover.set_axis_off()
+    art["cover"] = cover.add_patch(Rectangle((0, 0), 1, 1, fc=PAPER, ec="none"))
+    credit = []
+    to_frac = 1 / 0.765                         # figure height -> cover-axes height
+    top = 0.40
+    if logo is not None:
+        h_px, w_px = logo.shape[:2]
+        box_h_px, box_w_px = 0.15 * HEIGHT_PX, 0.70 * WIDTH_PX
+        scale = min(box_h_px / h_px, box_w_px / w_px)
+        w_frac = w_px * scale / WIDTH_PX
+        h_frac = h_px * scale / HEIGHT_PX * to_frac
+        y0 = 0.47 * to_frac
+        credit.append(cover.imshow(logo, extent=[0.5 - w_frac / 2, 0.5 + w_frac / 2, y0, y0 + h_frac],
+                                   aspect="auto", zorder=3, interpolation="antialiased"))
+    else:
+        top = 0.52
+    lines = [
+        (top, PRESENTER, dict(size=50, weight="heavy", color=INK, family=DISPLAY)),
+        (top - 0.042, ROLE_LINE, dict(size=27, color=SOFT)),
+        (top - 0.076, LAB_LINE, dict(size=27, color=SOFT)),
+        (top - 0.106, UNI_LINE, dict(size=27, color=SOFT)),
+        (0.205, "Free notebook and code", dict(size=23, color=SOFT)),
+        (0.175, "github.com/luckycharmer/Python_tutorials_2025",
+         dict(size=25, weight="bold", color=CORAL)),
+    ]
+    for y, txt, kw in lines:
+        kw.setdefault("family", SANS)
+        credit.append(cover.text(0.5, y * to_frac, txt, ha="center", va="center", zorder=4, **kw))
+    art["credit"] = credit
     return fig, art
 
 
@@ -311,14 +351,29 @@ def draw_frame(art, t):
     art["note"].set_alpha(1 - show)
 
     end = ease((t - SCENES[-1][0]) / 0.6)
-    art["end_url"].set_alpha(end)
+    cover = ease((t - SCENES[-1][0]) / 0.4)
+    art["cover"].set_alpha(cover)
+    art["gauge_val"].set_alpha(1 - cover)
+    art["gauge_unit"].set_alpha(1 - cover)
+    for item in art["credit"]:
+        item.set_alpha(ease((t - SCENES[-1][0] - 0.4) / 0.5))
+    art["note"].set_alpha((1 - show) * (1 - end))
     art["valley"].set_alpha(1)
     art["gap"].set_alpha(1 - end)
 
 
-def render(stills=None):
+def load_logo(path):
+    """Read the lab logo (PNG with transparency works best). Returns None if absent."""
+    if path is None or not Path(path).is_file():
+        return None
+    return plt.imread(str(path))
+
+
+def render(stills=None, logo_path=DEFAULT_LOGO):
     OUT_DIR.mkdir(exist_ok=True)
-    fig, art = build_figure()
+    logo = load_logo(logo_path)
+    print("logo:", logo_path if logo is not None else "none found, credit shown without logo")
+    fig, art = build_figure(logo)
 
     if stills:
         for t in stills:
@@ -353,5 +408,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--stills", nargs="+", type=float, help="export PNG frames at these seconds")
+    ap.add_argument("--logo", default=DEFAULT_LOGO,
+                    help="lab logo image (default: assets/lab_logo.png in this folder)")
     args = ap.parse_args()
-    render(args.stills)
+    render(args.stills, args.logo)

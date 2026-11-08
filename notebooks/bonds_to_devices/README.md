@@ -29,15 +29,17 @@ Planned numbers are textbook values and will be checked again against primary so
 | `01_why_hydrogen_comes_in_pairs.ipynb` | Class notebook: energy curve, zero-point energy, bond energy, thermal comparison, validation checks |
 | `h2_morse.py` | Constants and Morse model, shared by the notebook and the video |
 | `make_reel_ep01.py` | Renders the video to `output/ep01_h2_bond.mp4` |
+| `assets/lab_logo.png` | Lab logo for the end card (add your own; see `assets/README.md`) |
 
 To make the video yourself, install `ffmpeg` (a separate program, not a Python package), then run from this folder:
 
 ```bash
 python make_reel_ep01.py                   # full video, about 2 minutes on a laptop
 python make_reel_ep01.py --stills 2 10 20  # quick PNG previews at those seconds
+python make_reel_ep01.py --logo path/to/logo.png  # use a logo stored elsewhere
 ```
 
-The `output/` folder is not committed. The video is silent so you can add music or your own voice in CapCut, Canva or the Facebook editor.
+The end card credits Dr Junaid Ali and the Optoelectronics Research Laboratory; edit `PRESENTER`, `ROLE_LINE`, `LAB_LINE` and `UNI_LINE` near the top of the script to change it. The `output/` folder is not committed. The video is silent so you can add music or your own voice in CapCut, Canva or the Facebook editor.
 
 ## Episode 1 voice-over (optional, about 28 seconds)
 
