@@ -43,6 +43,9 @@ PRESENTER = "Dr Junaid Ali"
 ROLE_LINE = "Associate Professor of Physics"
 LAB_LINE = "Optoelectronics Research Laboratory"
 UNI_LINE = "COMSATS University Islamabad"
+WATERMARK_CORNER = "© Dr Junaid Ali"
+WATERMARK_CENTRE = "© Dr Junaid Ali · Optoelectronics Research Laboratory · COMSATS"
+COPYRIGHT_YEAR = 2026
 
 PAPER = "#f6f1e7"       # warm paper background
 INK = "#1d2a44"         # deep navy text and lines
@@ -169,8 +172,18 @@ def build_figure(logo=None):
                                    mutation_aspect=0.08))
     badge.text(0.5, 0.48, "BONDS TO DEVICES  ·  1", color=PAPER, family=SANS, size=19,
                weight="bold", ha="center", va="center", transform=badge.transAxes)
-    fig.text(0.93, 0.963, "H + H → H₂", color=SOFT, family=SANS, size=24, ha="right",
-             va="center")
+    # persistent ownership marks, on every frame (not only the end card)
+    mark_x = 0.93
+    if logo is not None:
+        h_px, w_px = logo.shape[:2]
+        bug_h = 0.034                                  # logo height as a share of the frame
+        bug_w = bug_h * HEIGHT_PX * w_px / h_px / WIDTH_PX
+        bug = fig.add_axes([0.93 - bug_w, 0.963 - bug_h / 2, bug_w, bug_h])
+        bug.imshow(logo, interpolation="antialiased")
+        bug.set_axis_off()
+        mark_x = 0.93 - bug_w - 0.015
+    fig.text(mark_x, 0.963, WATERMARK_CORNER, color=SOFT, family=SANS, size=21,
+             weight="semibold", ha="right", va="center")
 
     art["head"] = fig.text(0.07, 0.925, "", color=INK, family=DISPLAY, size=64,
                            weight="heavy", va="top", linespacing=1.02)
@@ -230,6 +243,11 @@ def build_figure(logo=None):
     ax.set_xlabel("gap between the two nuclei (picometres)", color=SOFT, family=SANS,
                   size=21, labelpad=12)
     art["valley"] = ax
+    ax.text(0.5, 0.30, WATERMARK_CENTRE, transform=ax.transAxes, ha="center", va="center",
+            color=INK, alpha=0.13, family=SANS, size=14, weight="semibold", zorder=2)
+    ax.text(0.5, 0.62, WATERMARK_CORNER, transform=ax.transAxes, ha="center", va="center",
+            color=INK, alpha=0.07, family=DISPLAY, size=58, weight="heavy", rotation=18,
+            zorder=2)
 
     # energy gauge, sharing the valley's energy scale
     g = fig.add_axes([0.84, 0.20, 0.06, 0.36])
@@ -390,7 +408,12 @@ def render(stills=None, logo_path=DEFAULT_LOGO):
     cmd = [ffmpeg, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba",
            "-s", f"{WIDTH_PX}x{HEIGHT_PX}", "-r", str(FPS), "-i", "-",
            "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
-           "-movflags", "+faststart", str(out)]
+           "-movflags", "+faststart",
+           "-metadata", "title=Bonds to Devices, Episode 1: Why hydrogen comes in pairs",
+           "-metadata", f"artist={PRESENTER}",
+           "-metadata", f"copyright=© {COPYRIGHT_YEAR} {PRESENTER}, {LAB_LINE}, {UNI_LINE}",
+           "-metadata", "comment=Notebook and code: github.com/luckycharmer/Python_tutorials_2025",
+           str(out)]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for k in range(int(DURATION_S * FPS)):
         draw_frame(art, k / FPS)
