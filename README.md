@@ -11,7 +11,13 @@ Work through the executable notebooks in order:
 - [Tutorial 01 — Arrays, units, and an I–V plot](notebooks/01_core/01_arrays_units_iv_plot.ipynb): arrays, unit conversion, linear fitting, residual inspection, plotting, and cautious physical interpretation.
 - [Tutorial 02 — Vectorised sheet resistance from four-point-probe data](notebooks/01_core/02_vectorised_sheet_resistance.ipynb): two-dimensional arrays, broadcasting, fitting many datasets at once, slope uncertainty, and converting to sheet resistance, resistivity, and conductivity.
 
-Both use clearly labelled synthetic data. Every notebook is checked automatically on each pull request (see [.github/workflows/check-notebooks.yml](.github/workflows/check-notebooks.yml)).
+Both use clearly labelled synthetic data.
+
+## Bonds to Devices series
+
+A short series that goes from a single chemical bond to a working photodetector. Each episode pairs a class notebook with a 25-second vertical video, and both are built from the same code. See [notebooks/bonds_to_devices/](notebooks/bonds_to_devices/README.md).
+
+- [Episode 1 — Why hydrogen comes in pairs](notebooks/bonds_to_devices/01_why_hydrogen_comes_in_pairs.ipynb): the H₂ energy curve, zero-point energy, bond energy and a comparison with thermal energy, all calculated from measured spectroscopic constants. Every notebook is checked automatically on each pull request (see [.github/workflows/check-notebooks.yml](.github/workflows/check-notebooks.yml)).
 
 ## Repository contents
 
